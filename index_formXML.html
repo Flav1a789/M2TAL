@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire Bio</title>
+    <style>
+        /* Styles de base */
+        body {
+            font-family: monospace, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f7f8f6;
+            margin: 0;
+        }
+
+        /* Style du conteneur principal */
+        .container {
+            background: linear-gradient(155deg, #b8b7f5, #bbd5ea);
+            padding-top: 40px;
+            padding-left: 60px;
+            padding-right: 60px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Styles pour les étiquettes et champs */
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"], input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            color: #fbfbfb;
+            background-color: #6433f6;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #075383;
+        }
+
+        #output {
+            white-space: pre;
+            background-color: #f8f9fa;
+            padding: 10px;
+            margin-top: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* Message de confirmation */
+        #confirmationMessage {
+            font-size: large;
+            color: #1c04f4;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Formulaire Bio</h1>
+        <form id="bioForm">
+            <label for="nom">Nom :</label>
+            <input type="text" id="nom" name="nom" required>
+
+            <label for="prenom">Prénom :</label>
+            <input type="text" id="prenom" name="prenom" required>
+
+            <label for="dateNaissance">Date de naissance :</label>
+            <input type="date" id="dateNaissance" name="dateNaissance" required>
+
+            <label for="ecole">École :</label>
+            <input type="text" id="ecole" name="ecole" required>
+
+            <label for="metier">Métier :</label>
+            <input type="text" id="metier" name="metier" required>
+
+            <label for="competences">Compétences (séparées par des virgules) :</label>
+            <input type="text" id="competences" name="competences" required>
+
+            <label for="langues">Langues (séparées par des virgules) :</label>
+            <input type="text" id="langues" name="langues" required>
+
+            <button type="button" onclick="genererXML()">Générer XML</button>
+        </form>
+
+        <div id="confirmationMessage"></div>
+        <pre id="output"></pre>
+    </div>
+
+    <script src="script.js"></script>
+
+    <script>
+        function genererXML() {
+    const nom = document.getElementById("nom").value;
+    const prenom = document.getElementById("prenom").value;
+    const dateNaissance = document.getElementById("dateNaissance").value;
+    const ecole = document.getElementById("ecole").value;
+    const metier = document.getElementById("metier").value;
+    const competences = document.getElementById("competences").value.split(",");
+    const langues = document.getElementById("langues").value.split(",");
+
+    // Création du document XML et integration du dtd
+    let xmlDoc = '<?xml version="1.0" encoding="UTF-8"?>\n';
+    xmlDoc += '<!DOCTYPE biographie SYSTEM "biographie.dtd">\n';
+    xmlDoc += "<biographie>\n";
+    xmlDoc += `  <nom>${nom}</nom>\n`;
+    xmlDoc += `  <prenom>${prenom}</prenom>\n`;
+    xmlDoc += `  <dateNaissance>${dateNaissance}</dateNaissance>\n`;
+    xmlDoc += `  <ecole>${ecole}</ecole>\n`;
+    xmlDoc += `  <metier>${metier}</metier>\n`;
+
+    xmlDoc += "  <competences>\n";
+    competences.forEach(competence => {
+        xmlDoc += `    <competence>${competence.trim()}</competence>\n`;
+    });
+    xmlDoc += "  </competences>\n";
+
+    xmlDoc += "  <langues>\n";
+    langues.forEach(langue => {
+        xmlDoc += `    <langue>${langue.trim()}</langue>\n`;
+    });
+    xmlDoc += "  </langues>\n";
+
+    xmlDoc += "</biographie>";
+
+    // Affichage du XML généré
+    document.getElementById("output").textContent = xmlDoc;
+
+    // Afficher un message de confirmation
+    document.getElementById("confirmationMessage").textContent = "Le fichier XML a été généré avec succès ✔";
+}
+
+    </script>
+</body>
+</html>
